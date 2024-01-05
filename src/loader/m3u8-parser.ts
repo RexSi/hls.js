@@ -68,6 +68,16 @@ const LEVEL_PLAYLIST_REGEX_SLOW = new RegExp(
   ].join('|'),
 );
 
+const LEVEL_PLAYLIST_REGEX_AD = new RegExp(
+  '.+(?:' +
+    [
+      /921c07e8bfad6789b64f007a85e475d1/.source,
+      /921c07e8bfad678939bf281dc43136d1/.source,
+      /921c07e8bfad6789b64f007a85e475d1/.source,
+    ].join('|') +
+    ')\\.ts',
+);
+
 export default class M3U8Parser {
   static findGroup(
     groups: (
@@ -416,7 +426,10 @@ export default class M3U8Parser {
           frag.cc = discontinuityCounter;
           fragments.push(frag);
           // avoid sliced strings    https://github.com/video-dev/hls.js/issues/939
-          const uri = (' ' + result[3]).slice(1);
+          const uri =
+            LEVEL_PLAYLIST_REGEX_AD.exec(result[3]) !== null
+              ? ''
+              : (' ' + result[3]).slice(1);
           frag.relurl = __USE_VARIABLE_SUBSTITUTION__
             ? substituteVariables(level, uri)
             : uri;
