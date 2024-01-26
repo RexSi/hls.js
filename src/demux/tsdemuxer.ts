@@ -94,7 +94,7 @@ class TSDemuxer implements Demuxer {
 
   static syncOffset(data: Uint8Array): number {
     const length = data.length;
-    let scanwindow = Math.min(PACKET_LENGTH * 5, length - PACKET_LENGTH) + 1;
+    let scanwindow = Math.min(PACKET_LENGTH * 6, length - PACKET_LENGTH) + 1;
     let i = 0;
     while (i < scanwindow) {
       // a TS init segment should contain at least 2 TS packets: PAT and PMT, each starting with 0x47
